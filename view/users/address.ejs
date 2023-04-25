@@ -1,0 +1,138 @@
+<%- include('../layouts/header.ejs') -%>
+
+
+    <body style="background-color: lightgrey;">
+
+        <!-- Topbar Start -->
+        <div class="container-fluid">
+            <div class="row bg-secondary py-2 px-xl-5">
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-dark" href="">FAQs</a>
+                        <span class="text-muted px-2">|</span>
+                        <a class="text-dark" href="">Help</a>
+                        <span class="text-muted px-2">|</span>
+                        <a class="text-dark" href="">Support</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a class="text-dark pl-2" href="">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center py-3 px-xl-5">
+                <div class="col-lg-3 d-none d-lg-block bg-dark" style="box-shadow: 5px 5px 5px 3px rgb(73, 72, 59) ">
+                    <a href="" class="text-decoration-none text-center ">
+                        <h1 class="m-0 display-5 font-weight-semi-bold text-primary"><span
+                                class="text-light bg-primary font-weight-bold border px-3 mr-1">e-</span>Fa</h1>
+                        <span class=" d-flex justify-content-center">Fashion World</span>
+                    </a>
+                </div>
+                <div class="col-lg-6 col-6 text-left">
+
+                </div>
+                <div class="col-lg-3 col-6 text-right">
+                    <a href="" class="btn border">
+                        <i class="fas fa-heart text-primary"></i>
+                        <span class="badge">0</span>
+                    </a>
+
+                </div>
+            </div>
+            <!-- Topbar End -->
+
+            <div class="col-lg-12 mt-5" style="    display: flex;
+            justify-content: center;">
+                <div class="card" style="    width: 80%;
+                box-shadow: 4px 4px 4px 4px;">
+                    <div class="card-body p-5 ">
+                        <form action="/addAddress" method="post">
+                            <div class="row mb-3">
+
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0 text-primary">Full Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-primary">
+                                    <input type="text" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" name="name" value="<%= userDetails.name %>"
+                                        placeholder="">
+                                </div>
+                            </div>
+
+                            <div class=" row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0 text-primary">Phone</h6>
+                                </div>
+                                <div class="col-sm-9 text-primary">
+                                    <input type="text" name="mobile" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" value="<%= userDetails.mobile_no %>">
+                                </div>
+                            </div>
+
+                            <div class=" row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0 text-primary">Permanent Address</h6>
+                                </div>
+                                <div class="col-sm-9 text-primary">
+                                    <label for="">House Name</label>
+                                    <input type="text" name="housename" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" required>
+                                    <label for="">Place</label>
+                                    <input type="text" name="place" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" required>
+                                    <label for="">Landmark</label>
+                                    <input type="text" name="landmark" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" required>
+                                    <label for="">Pincode</label>
+                                    <input type="text" name="pincode" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" required>
+                                    <label for="">District</label>
+                                    <input type="text" name="district" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" required>
+                                    <label for="">State</label>
+                                    <input type="text" name="state" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" required>
+                                    <label for="">Email</label>
+                                    <input type="text" name="email" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" required>
+                                    <label for="">Mobile</label>
+                                    <input type="text" name="contact" class=" border-0 form-control  "
+                                        style="background-color: #f6eded;" required>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-9 text-secondary">
+                                <input type="hidden" name="userId" class="form-control">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9 text-secondary">
+                                    <button class="btn btn-primary px-4" type="submit">Add
+                                        Address</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../layouts/footer.ejs') -%>

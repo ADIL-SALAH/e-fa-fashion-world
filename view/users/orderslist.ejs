@@ -1,0 +1,258 @@
+<%- include('../layouts/header.ejs')%>
+
+    <body style="background-color: lightgrey;">
+        <!-- Topbar Start -->
+        <div class="container-fluid">
+            <div class="row bg-secondary py-2 px-xl-5">
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-dark" href="">FAQs</a>
+                        <span class="text-muted px-2">|</span>
+                        <a class="text-dark" href="">Help</a>
+                        <span class="text-muted px-2">|</span>
+                        <a class="text-dark" href="">Support</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a class="text-dark pl-2" href="">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center py-3 px-xl-5">
+                <div class="col-lg-3 d-none d-lg-block bg-dark" style="box-shadow: 5px 5px 5px 3px rgb(73, 72, 59) ">
+                    <a href="" class="text-decoration-none text-center ">
+                        <h1 class="m-0 display-5 font-weight-semi-bold text-primary"><span
+                                class="text-light bg-primary font-weight-bold border px-3 mr-1">e-</span>Fa</h1>
+                        <span class=" d-flex justify-content-center">Fashion World</span>
+                    </a>
+                </div>
+                <div class="col-lg-6 col-6 text-left">
+
+                </div>
+                <div class="col-lg-3 col-6 text-right">
+                    <a href="" class="btn border">
+                        <i class="fas fa-heart text-primary"></i>
+                        <span class="badge">0</span>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <!-- Topbar End -->
+
+
+
+
+        <!-- Navbar Start -->
+        <div class="container-fluid mb-5">
+            <div class="row border-top px-xl-5">
+
+                <div class="col-lg-9 mt-5">
+                    <nav class="navbar navbar-expand-lg navbar-light py-3 py-lg-0 px-0"
+                        style="background-color: lightgray;">
+                        <a href="" class="text-decoration-none d-block d-lg-none">
+                            <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                                    class="text-primary font-weight-bold border px-3 mr-1">e-</span>Fa</h1>
+                        </a>
+                        <button type="button" class="navbar-toggler" data-toggle="collapse"
+                            data-target="#navbarCollapse">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                            <div class="navbar-nav mr-auto py-0">
+                                <a href="/home" class="nav-item nav-link ">
+                                    <h6 class="nav-link">Home</h6>
+                                </a>
+                                <a href="/shop" class="nav-item nav-link ">
+                                    <h6 class="nav-link">Shop</h6>
+                                </a>
+
+                                <a href="/userProfile" class="nav-item nav-link">
+                                    <h6 class="nav-link">Profile</h6>
+                                </a>
+                            </div>
+
+                        </div>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+        <!-- Navbar End -->
+
+        <div class="container-fluid">
+            <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+
+            </div>
+        </div>
+        <div id="page">
+
+            <div class="container">
+                <div class="mt-5 ">
+                    <h4></h4>
+                </div>
+            </div>
+            <section class="mt-5 mb-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table table-striped" id="user-table" style="box-shadow: 4px 4px 4px 4px;">
+                                <thead class="bg-primary text-light">
+                                    <tr>
+
+                                        <th scope="col">sl.no</th>
+                                        <th scope="col">Order ID & Orderd Date</th>
+
+                                        <th scope="col">Ordered Date</th>
+
+                                        <th scope="col">Total Bill</th>
+                                        <th scope="col">Payment Method</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Details</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-light">
+
+                                    <%for( let i=0; i <ordersList.length; i++ ) { %>
+
+
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <%=i+1+(currentPage*limit-limit)%>
+                                                </div>
+                                            </td>
+
+                                            <td>
+
+                                                <div>
+                                                    <h6 class="text-primary">Order ID :</h6>
+                                                    <%=ordersList[i]._id%>
+                                                </div>
+
+
+
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="mt-3">
+                                                    <%=ordersList[i].date.toLocaleDateString()%>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <div>₹ <%=ordersList[i].net_total %>
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+                                                <div>
+                                                    <%=ordersList[i].payment_method %>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <% if(ordersList[i].status=="Order Confirmed" ){%>
+                                                        <div class="text-info">
+                                                            <%=ordersList[i].status %>
+                                                        </div>
+                                                        <%}else if(ordersList[i].status=="Order Cancelled" ){%>
+                                                            <div class="text-danger">
+                                                                <%=ordersList[i].status %>
+                                                            </div>
+                                                            <%}else if(ordersList[i].status=="Order Returned" ){%>
+                                                                <div class="text-warning">
+                                                                    <%=ordersList[i].status %>
+                                                                </div>
+                                                                <%}else if(ordersList[i].status=="Order Delivered" ){%>
+                                                                    <div class="text-success">
+                                                                        <%=ordersList[i].status %>
+                                                                    </div>
+                                                                    <%}else if(ordersList[i].status=="Order Shipped"
+                                                                        ){%>
+                                                                        <div style="color: blue;">
+                                                                            <%=ordersList[i].status %>
+                                                                        </div>
+                                                                        <%}%>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a type=" button" href="/orderDetails?orderid=<%=ordersList[i]._id%>"
+                                                    class=" btn btn-primary">Details</a>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                    </div>
+            </section>
+            <div class="col-12 pb-1">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mb-3">
+                        <% if(currentPage>1){ %>
+                            <li class="page-item">
+                                <a class="page-link" href="/orderList?pageno=<%= currentPage-1 %>"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <% } %>
+
+
+                                <% for(j=1;j<=totalPage;j++){ %>
+                                    <% if(currentPage==j){ %>
+                                        <li class="page-item active"><a class="page-link"
+                                                href="/orderList?pageno=<%= j %>">
+                                                <%= j %>
+                                            </a></li>
+                                        <% }else{ %>
+                                            <li class="page-item"><a class="page-link"
+                                                    href="/orderList?pageno=<%= j %>">
+                                                    <%= j %>
+                                                </a></li>
+                                            <% } %>
+                                                <% } %>
+
+                                                    <% if(currentPage<totalPage) {%>
+                                                        <li class="page-item">
+                                                            <a class="page-link"
+                                                                href="/orderList?pageno=<%= parseInt (currentPage)+1 %>"
+                                                                aria-label="Next">
+                                                                <span aria-hidden="true">&raquo;</span>
+                                                                <span class="sr-only">Next</span>
+                                                            </a>
+                                                        </li>
+                                                        <% } %>
+
+
+
+                    </ul>
+                </nav>
+            </div>
+    </body>
+    <%- include('../layouts/footer.ejs')%>

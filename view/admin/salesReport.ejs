@@ -1,0 +1,303 @@
+<%- include('../adminlayout/adminHeader') -%>
+
+    <body style="background-color: lightgrey;">
+
+
+
+        <nav class="navbar navbar-expand-xl">
+            <div class="container h-100">
+                <a class="navbar-brand" href="index.html">
+                    <h1 class="tm-site-title mb-0">Product Admin</h1>
+                </a>
+                <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="fas fa-bars tm-nav-icon"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto h-100">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/adminHome">
+                                <i class="fas fa-tachometer-alt"></i>
+                                Dashboard
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link " href="/admin/category" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-file-alt"></i>
+                                <span>
+                                    Category
+                                </span>
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " href="/admin/productList" role="button">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>
+                                    Product
+                                </span>
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " href="/admin/bannerMgt" role="button">
+                                <i class="fa-solid fa-images"></i>
+                                <span>
+                                    Banner
+                                </span>
+                            </a>
+
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/userMgt" role="button">
+                                <i class="far fa-user"></i>
+                                User
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/orderMgt" role="button">
+                                <i class="fa-solid fa-truck"></i> Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/coupon" role="button">
+                                <i class="fa-solid fa-tag"></i>Coupon
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/salesReport" role="button">
+                                <i class="fa-thin fa-file-chart-column"></i>Sales Report
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+
+                            <a class="nav-link d-block" href="/admin/logout">
+                                Admin, <b>Logout</b>
+                            </a>
+
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+        </nav>
+
+
+        <div class="container-fluid">
+            <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+
+            </div>
+        </div>
+
+
+        <div class="container d-flex " style="justify-content: space-between;">
+            <div class="row mt-3">
+                <div id="page">
+                    <div class="">
+                        <button type="button" style="background: transparent; border: none;" class=""
+                            onclick="ExportToExcel()"><img style="width: 30px;"
+                                src="https://cdn-icons-png.flaticon.com/512/9811/9811256.png" alt=""></button>
+                        <button type="button" style="background: transparent; border: none;" class="btn-light"
+                            onclick="printTable()"><img style="width: 30px;"
+                                src="https://cdn-icons-png.flaticon.com/512/839/839286.png" alt=""> </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 mt-3 d-flex justify-content-between align-items-center">
+                <form action="/admin/salesReport" method="post" onsubmit="return validateDates()" class="d-flex">
+                    <input name="first" type="date" style="height: 30px;">
+                    <input name="last" type="date" style="height: 30px;" class="ml-2">
+                    <button type="submit" class="rounded btn-sm ml-2"
+                        style="background-color: rosybrown; border: none;">submit</button>
+                </form>
+            </div>
+
+
+        </div>
+        <section class="mt-5 mb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-striped" id="salesTable" style="box-shadow: 4px 4px 4px 4px;">
+                            <thead class="bg-secondary text-light">
+                                <tr>
+
+                                    <th scope="col">sl.no</th>
+                                    <th scope="col">Order ID </th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Place</th>
+                                    <th scope="col">Orderd Date</th>
+                                    <th scope="col">Bill Amount</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody class="bg-light">
+
+                                <%for( let i=0; i <orderDetails.length; i++ ) { %>
+
+
+                                    <tr>
+                                        <td>
+                                            <div class="text-secondary">
+                                                <%=i+1+(currentPage*limit-limit)%>
+                                            </div>
+                                        </td>
+
+                                        <td>
+
+                                            <div class="text-secondary">
+                                                <h6 class="text-primary">Order ID :</h6>
+                                                <%=orderDetails[i]._id%>
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <div class="text-secondary">
+                                                <h6 class="text-primary"></h6>
+                                                <%=orderDetails[i].delivery_address[0].name%>
+                                            </div>
+
+                                        </td>
+                                        <td>
+
+                                            <div class="text-secondary">
+                                                <h6 class="text-primary"></h6>
+                                                <%=orderDetails[i].delivery_address[0].place%>
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <div class="mt-3 text-secondary">
+                                                <%=orderDetails[i].date.toLocaleDateString()%>
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <div class="text-secondary">
+                                                ₹ <%=orderDetails[i].net_total %>
+                                            </div>
+
+                                        </td>
+
+
+
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                </div>
+        </section>
+        <div class="col-12 pb-1">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mb-3">
+                    <% if(currentPage>1){ %>
+                        <li class="page-item">
+                            <a class="page-link" href="/admin/orderMgt?pageno=<%= currentPage-1 %>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <% } %>
+
+
+                            <% for(j=1;j<=totalPage;j++){ %>
+                                <% if(currentPage==j){ %>
+                                    <li class="page-item nav active"><a class="page-link"
+                                            href="/admin/salesReport?pageno=<%= j %>">
+                                            <%= j %>
+                                        </a></li>
+                                    <% }else{ %>
+                                        <li class="page-item"><a class="page-link"
+                                                href="/admin/salesReport?pageno=<%= j %>">
+                                                <%= j %>
+                                            </a></li>
+                                        <% } %>
+                                            <% } %>
+
+                                                <% if(currentPage<totalPage) {%>
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                            href="/admin/salesReport?pageno=<%= parseInt (currentPage)+1 %>"
+                                                            aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                            <span class="sr-only">Next</span>
+                                                        </a>
+                                                    </li>
+                                                    <% } %>
+
+
+
+                </ul>
+            </nav>
+        </div>
+
+        <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+        <script>
+            function ExportToExcel(type, fn, dl) {
+                var elt = document.getElementById("salesTable");
+                var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+                return dl ?
+                    XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                    XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+            }
+            function printTable() {
+                var table = document.getElementById("salesTable");
+                if (!table) {
+                    console.error("Table element not found.");
+                    return;
+                }
+                var newWin = window.open('', 'Print-Window');
+                if (!newWin) {
+                    console.error("Could not open print window.");
+                    return;
+                }
+                newWin.document.open();
+                newWin.document.write('<html><body onload="window.print()">' + table.outerHTML + '</html>');
+                newWin.document.close();
+                setTimeout(function () {
+                    if (!newWin.closed) {
+                        newWin.close();
+                    }
+                }, 1000);
+            }
+            function validateDates() {
+                var firstDate = new Date(document.getElementsByName('first')[0].value);
+                var lastDate = new Date(document.getElementsByName('last')[0].value);
+                if (firstDate > lastDate) {
+                    swal({
+                        title: "Error",
+                        text: "The first date must be earlier than the second date.",
+                        icon: "error",
+                        button: "OK",
+                    });
+                    return false;
+                }
+                return true;
+            }
+
+        </script>
+    </body>
+    <%- include('../adminlayout/adminfooter') -%>

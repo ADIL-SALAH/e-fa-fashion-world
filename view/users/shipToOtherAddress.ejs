@@ -1,0 +1,552 @@
+<%- include('../layouts/header.ejs') -%>
+
+    <style>
+        .coupencard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 230px;
+            background-color: rgb(218, 90, 90);
+            border-radius: 20px;
+        }
+
+        .coupenimage {
+            margin-bottom: 10px;
+        }
+
+        .coupenimage2 {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .coupen-d-block {
+            margin-bottom: 10px;
+        }
+
+        .mt-4 {
+            margin-top: 20px;
+        }
+    </style>
+
+    <body style="background-color: lightgrey;">
+
+        <!-- Topbar Start -->
+        <div class="container-fluid">
+            <div class="row bg-secondary py-2 px-xl-5">
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-dark" href="">FAQs</a>
+                        <span class="text-muted px-2">|</span>
+                        <a class="text-dark" href="">Help</a>
+                        <span class="text-muted px-2">|</span>
+                        <a class="text-dark" href="">Support</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a class="text-dark pl-2" href="">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center py-3 px-xl-5">
+                <div class="col-lg-3 d-none d-lg-block bg-dark" style="box-shadow: 5px 5px 5px 3px rgb(73, 72, 59) ">
+                    <a href="" class="text-decoration-none text-center ">
+                        <h1 class="m-0 display-5 font-weight-semi-bold text-primary"><span
+                                class="text-light bg-primary font-weight-bold border px-3 mr-1">e-</span>Fa</h1>
+                        <span class=" d-flex justify-content-center">Fashion World</span>
+                    </a>
+                </div>
+                <div class="col-lg-6 col-6 text-left">
+
+                </div>
+                <div class="col-lg-3 col-6 text-right">
+                    <a href="" class="btn border">
+                        <i class="fas fa-heart text-primary"></i>
+                        <span class="badge">0</span>
+                    </a>
+                    <button class="btn border">
+                        <i class="fa-solid fa-wallet text-primary"></i>
+                        <span class="badge">
+                            <%= walletAmount %>
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Topbar End -->
+
+
+
+
+        <!-- Navbar Start -->
+        <div class="container-fluid mb-5">
+            <div class="row border-top px-xl-5">
+
+                <div class="col-lg-9 mt-5">
+                    <nav class="navbar navbar-expand-lg navbar-light py-3 py-lg-0 px-0"
+                        style="background-color: lightgray;">
+                        <a href="" class="text-decoration-none d-block d-lg-none">
+                            <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                                    class="text-primary font-weight-bold border px-3 mr-1">e-</span>Fa</h1>
+                        </a>
+                        <button type="button" class="navbar-toggler" data-toggle="collapse"
+                            data-target="#navbarCollapse">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                            <div class="navbar-nav mr-auto py-0">
+                                <a href="/home" class="nav-item nav-link ">
+                                    <h6 class="nav-link">Home</h6>
+                                </a>
+                                <a href="/shop" class="nav-item nav-link ">
+                                    <h6 class="nav-link">Shop</h6>
+                                </a>
+
+                                <a href="/userProfile" class="nav-item nav-link">
+                                    <h6 class="nav-link">Profile</h6>
+                                </a>
+                            </div>
+
+                        </div>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+        <!-- Navbar End -->
+
+
+
+        <!-- Checkout Start -->
+
+
+        <div class="container-fluid pt-5 ">
+            <!-- <button type="button"
+                class="btn btn-lg btn-block btn-primary text-light font-weight-bold my-3 py-3 mr-5 w-25"
+                id="rzp-button1" onclick="razorpay()" style="display: none; ">
+                Place Order
+            </button> -->
+
+            <button type="button" class="btn btn-lg btn-primary text-light font-weight-bold my-3 py-3 mx-auto"
+                id="rzp-button1" onclick="razorpay()" style="display: none;">
+                Place Order
+            </button>
+
+            <div class="d-flex ">
+                <a href="/checkOut" class="ml-auto mt-5 mr-4 mb-2 btn bg-primary text-light "
+                    style="display:block;width: fit-content; box-shadow:rgb(57, 61, 66) 2px 2px 2px 2px;">Back to Select
+                    Address</a>
+            </div>
+            <form action="/placeOrder" method="post" class="row">
+
+                <div class="col-lg-8 ">
+
+                    <div class="mb-4 bg-light p-4">
+                        <h4 class="font-weight-semi-bold  text-primary text-center  ">Billing Address
+                        </h4>
+                        <h6 class="font-weight-semi-bold  text-primary text-center ">Choose Address</h6>
+                        <div class="row ">
+                            <div class="col-lg-12 mt-3" style="display: flex; justify-content: center;">
+                                <div class="card" style="width: 80%; box-shadow:inset -1px 0px 20px 4px">
+                                    <div class="card-body p-5 ">
+                                        <div class="row mb-3">
+
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0 text-primary">Full Name</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-primary">
+                                                <input type="text" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" name="name" value=""
+                                                    placeholder="">
+                                            </div>
+                                        </div>
+
+                                        <div class=" row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0 text-primary">Phone</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-primary">
+                                                <input type="text" name="mobile" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class=" row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0 text-primary">Permanent Address</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-primary">
+                                                <label for="">House Name</label>
+                                                <input type="text" name="housename" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" required>
+                                                <label for="">Place</label>
+                                                <input type="text" name="place" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" required>
+                                                <label for="">Landmark</label>
+                                                <input type="text" name="landmark" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" required>
+                                                <label for="">Pincode</label>
+                                                <input type="text" name="pincode" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" required>
+                                                <label for="">District</label>
+                                                <input type="text" name="district" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" required>
+                                                <label for="">State</label>
+                                                <input type="text" name="state" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" required>
+                                                <label for="">Email</label>
+                                                <input type="text" name="email" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" required>
+                                                <label for="">Mobile</label>
+                                                <input type="text" name="contact" class=" border-0 form-control  "
+                                                    style="background-color: #f6eded;" required>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="hidden" name="userId" class="form-control">
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr>
+                </div>
+
+
+                <div class="col-lg-4 mt-5">
+
+                    <div class="card border-secondary mb-5 mt-5" style="box-shadow: 4px 4px 4px 4px;;">
+                        <div class="card-header bg-secondary border-0">
+                            <h4 class="font-weight-semi-bold m-0">Order Total</h4>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="font-weight-medium mb-3">Products</h5>
+                            <%for(let i=0;i<userDetails.cart.length;i++) { %>
+
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <p>
+                                            <%= userDetails.cart[i].product.product_name %>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <%= userDetails.cart[i].product.price %> *
+                                        </span>
+                                        <span>
+
+                                            <%= userDetails.cart[i].quantity%> =
+                                        </span>
+                                        <span>
+
+                                        </span>
+                                        <span>
+                                            <%= userDetails.cart[i].total_price%>
+                                        </span>
+                                    </div>
+
+
+                                </div>
+
+                                <% } %>
+
+                        </div>
+
+                        <div class="card-footer border-secondary bg-transparent">
+                            <div>
+                                <h6 class="font-weight-bold">Discount</h6>
+                                <span>
+                                    <%= userDetails.cart[0].discount%>
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5 class="font-weight-bold">Total</h5>
+                                <h5 class="font-weight-bold">
+                                    <%=Math.round(userDetails.cart[0].grand_total-userDetails.cart[0].discount) %>
+
+                                </h5>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Coupon Section Begins Here -->
+                    <div class="">
+                        <h4 class="pt-4 text-center text-primary" style="font-weight: 700;">Discount coupon
+                        </h4>
+                        <hr>
+                    </div>
+                    <div class="coupon mb-5">
+                        <form class="" action='' method="">
+                            <div class="input-group justify-content-center ">
+
+                                <div class="input-group-append" style="box-shadow: 2px 2px 2px 2px;">
+
+                                    <button type="button" class="btn btn-primary text-light" id="showCoupens"
+                                        data-bs-toggle="modal" data-bs-target="#coupens">Show
+                                        Coupons</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card border-secondary mb-5" style="box-shadow: 4px 4px 4px 4px;;">
+                        <div class="card-header bg-secondary border-0">
+                            <h4 class="font-weight-semi-bold m-0">Payment</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="payment" name="payment" id="cod" value="cod">
+                                    <label class="" for="paypal">Cash on Delivery</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="payment" name="payment" id="razorpay" value="razorpay">
+                                    <label class=" " for="directcheck">RazorPay</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="payment" name="payment" id="wallet" value="wallet">
+                                    <label class=" " for="directcheck">Wallet</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer border-secondary bg-transparent">
+                            <button type="submit"
+                                class="btn btn-lg btn-block btn-primary text-light font-weight-bold my-3 py-3"
+                                id="button1">
+                                Place
+                                Order</button>
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </form>
+
+        </div>
+
+        </div>
+
+        <!-- Checkout End -->
+
+
+        <form action="/applyCoupon?flag=query" method="post">
+            <div class="modal fade" id="coupens" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background-color: darkgray; width: 100%; ">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="exampleModalLabel">Coupens
+                            </h5>
+                        </div>
+                        <div class="modal-body text-dark ">
+                            <div class="d-flex align-items-center coupenbody "
+                                style=" overflow-x:scroll;scroll-behavior: smooth;background-color: darkgray;  ">
+
+                                <%for(let i=0; i<couponDetails.length;i++){%>
+                                    <div class=" d-flex coupencard text-center p-4 m-4"
+                                        style="box-shadow: 4px 4px 4px 4px rgb(57, 75, 75) ;min-width: 43%;">
+                                        <input type="radio" name="coupon" value="<%= couponDetails[i].coupon_id %>">
+                                        <label for="">
+                                            <span class="text-secondary">
+                                                <b>
+                                                    <%=couponDetails[i].discount%>% Upto
+                                                        <%=couponDetails[i].max_discount%>
+                                                </b>
+
+                                            </span>
+                                            <div class="coupenimage mt-2">
+                                                <img class="bg-light" src="https://i.imgur.com/DC94rZe.png" width="50"
+                                                    style="opacity: 50%;">
+
+                                            </div>
+                                            <h1 class="text-info">
+                                                <b>
+                                                    <%=couponDetails[i].title%>
+                                                </b>
+
+                                            </h1><span class="coupen-d-block text-secondary">
+                                                for the purchase of
+                                                <b class="text-success">
+                                                    $ <%=couponDetails[i].bill_amount %>
+                                                </b>
+                                            </span>
+                                            <div>
+                                                <span class="text-secondary">
+                                                    <small>will Expire soon: <br>
+                                                        <%= couponDetails[i].expiry_date%>
+                                                    </small>
+                                                </span>
+                                            </div>
+                                            <div class="bg-light mt-2 text-primary"><small>
+                                                    code: <%=couponDetails[i].coupon_id %>
+                                                </small></div>
+                                        </label>
+                                    </div>
+                                    <%}%>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button type=" button" id="close1" class="btn btn-primary text-light"
+                            data-bs-dismiss="modal">No</button> -->
+                            <button type="submit" href="" class="btn btn-secondary text-light" id="applyCoupen"
+                                style="display: block; background-color: cadetblue;">Apply
+                                Coupon</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+    <script>
+
+        let selectedAddressId = null;
+
+        function updateSelectedAddress() {
+            const radios = document.getElementsByName('address');
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    selectedAddressId = radios[i].value;
+                    break;
+                }
+            }
+            console.log(selectedAddressId); // Do something with the selected address ID
+        }
+
+        function showButton(btnNum) {
+            const button1 = document.getElementById("button1")
+            const button2 = document.getElementById("rzp-button1")
+            if (btnNum == 1) {
+                button1.style.display = "block"
+                button2.style.display = "none"
+            }
+            else {
+                button1.style.display = "none"
+                button2.style.display = "block"
+            }
+        }
+
+
+        function razorpay() {
+            $.ajax({
+                url: `/orderCreation?addressId=${selectedAddressId}`,
+                type: 'get',
+                dataType: 'json',
+                contentType: 'appilaction/json',
+
+                success: (res) => {
+                    console.log(res, "{{{{{{{{{{}}}}}}}}}}");
+
+                    if (res.order) {
+
+                        var options = {
+                            "key": 'rzp_test_EWUJbMjY8cGv66',
+                            "amount": "<%= 100 *100 %>",
+                            "currency": "INR",
+                            "name": "Acme Corp",
+                            "description": "Test Transaction",
+                            "image": "https://example.com/your_logo",
+                            "order_id": res.order.id,
+                            "handler": function (response) {
+                                success()
+                            },
+                            "prefill": {
+                                "name": "Gaurav Kumar",
+                                "email": "gaurav.kumar@example.com",
+                                "contact": "9000090000"
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#dc3545"
+                            }
+                        }; console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                        var rzp1 = new Razorpay(options);
+                        document.getElementById('rzp-button1').onclick = function (e) {
+                            rzp1.open();
+                            e.preventDefault();
+                        }
+                    }
+
+                }
+            })
+        }
+        function success() {
+            location.href = '/razorpay'
+
+        }
+
+
+    </script>
+
+
+
+    <% if (success !=null) { %>
+        <script>
+            swal({
+                title: "success",
+                text: "<%= success %>",
+                icon: "success"
+            });
+        </script>
+        <%} %>
+            <% if (message !=null) { %>
+                <script>
+                    swal({
+                        title: "Sorry!!",
+                        text: "<%= message %>",
+                        icon: "info"
+                    });
+                </script>
+                <%} %>
+
+
+                    <% - include('../layouts/footer.ejs') -%>

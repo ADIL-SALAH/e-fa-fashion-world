@@ -1,0 +1,239 @@
+<%- include('../layouts/header.ejs') -%>
+
+    <body style="background-color: lightgrey;">
+
+        <div class="container ">
+            <div class=" card mt-5 pt-1 ">
+                <div class="card-body" style="box-shadow: 4px 4px 4px 4px;">
+                    <div class="container mt-4 mb-5 bg-primary">
+                        <div class=" row d-flex cart align-items-center justify-content-center "
+                            style=" min-height: 600px;">
+                            <div class="col-md-10">
+                                <div class="card bg-dark">
+
+                                    <div class="row g-0">
+                                        <div class="col-md-12 border-right p-5">
+                                            <div class="text-center order-details">
+                                                <div
+                                                    class="d-flex justify-content-center mb-5 flex-column align-items-center ">
+                                                    <span class="check1"><i class="fa fa-check text-success"></i></span>
+                                                    <span class="font-weight-bold text-success">Order Confirmed</span>
+                                                    <small class="mt-4 mb-4">Your Order will get to you
+                                                        soon..</small>
+                                                    <a href="#invoice" class="text-decoration-none invoice-link">View
+                                                        Invoice</a>
+                                                </div> <a href="/orderList"
+                                                    class="btn btn-primary btn-block order-button text-dark">Go
+                                                    to
+                                                    your
+                                                    Order</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <hr id="invoice"><br>
+
+                    <div class="container mb-5 mt-3">
+                        <div class=" row d-flex align-items-baseline">
+                            <div class="col-xl-9">
+                                <p style="color: #7e8d9f;font-size: 15px;">INVOICE >> <strong>
+                                        <%=orderData.order_id%>
+                                    </strong>
+                                </p>
+
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div style="box-shadow: 2px 2px 2px 2px;">
+                                    <button class=" btn btn-info ml-left" id="printInvoice"> Print</button>
+                                </div>
+                                <div class=".flex-row ml-2 mr-3"
+                                    style="display: flex; justify-content: flex-end; box-shadow: 2px 2px 2px 2px; ">
+                                    <a class=" btn btn-primary text-light" href="/">
+                                        Continue Shopping
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
+
+                        <div class="container">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <p class="pt-0">
+                                    <h3><span style="color: hsl(0, 45%, 65%); font-weight: bold"> e-Fa WORLD
+                                            INVOICE
+                                        </span> </h3>
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-xl-8  ">
+                                    <ul class="list-unstyled ">
+                                        <li class="text-muted">
+                                            <h5>To:</h5> <span style="color:#5d9fc5 ;">
+                                                <h6>
+                                                    <%=orderData.user.name%>
+                                                </h6>
+                                            </span>
+                                        </li>
+                                        <li class="text-muted">
+                                            <h6>
+                                                <%=orderData.delivery_address[0].house_name%>
+                                            </h6>
+                                        </li>
+                                        <li class="text-muted">
+                                            <h6>
+                                                <%=orderData.delivery_address[0].place%>
+                                            </h6>
+                                        </li>
+                                        <li class="text-muted">
+                                            <h6>
+                                                <%=orderData.delivery_address[0].landmark%>
+                                            </h6>
+                                        </li>
+                                        <li class="text-muted">
+                                            <h6>
+                                                <%=orderData.delivery_address[0].pincode%>
+                                            </h6>
+                                        </li>
+                                        <li class="text-muted">
+                                            <h6>
+                                                <%=orderData.delivery_address[0].district%>
+                                            </h6>
+                                        </li>
+                                        <li class="text-muted">
+                                            <h6>
+                                                <%=orderData.delivery_address[0].state%>
+                                            </h6>
+                                        </li>
+                                        <li class="text-muted">
+                                            <h6><i class="fa fa-phone "></i>
+                                                <%=orderData.delivery_address[0].contact_no%>
+                                            </h6>
+                                        </li>
+                                        <li class="text-muted">
+                                            <h6><i class="fa fa-envelope "></i>
+                                                <%=orderData.delivery_address[0].email%>
+                                            </h6>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xl-4">
+                                    <h6 class="text-muted">Invoice:<%=orderData.order_id%>
+                                    </h6>
+                                    <ul class="list-unstyled">
+
+
+                                        <li class="text-muted"><i class="fa fa-circle"
+                                                style="color:hsl(0, 31%, 55%) ;"></i>
+                                            <span class="fw-bold">Payment Method: </span>
+                                            <%=orderData.payment_method%>
+                                        </li>
+                                        <li class="text-muted"><i class="fa fa-circle"
+                                                style="color:hsl(0, 31%, 55%)  ;"></i>
+                                            <span class="fw-bold">Creation Date: </span>
+                                            <%=orderData.date.toLocaleDateString()%>
+                                        </li>
+
+                                        <li class="text-muted"><i class="fa fa-circle"
+                                                style="color:hsl(0, 31%, 55%) ;"></i>
+                                            <span class="me-1 fw-bold">Order Status: </span>
+                                            <%=orderData.status%>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row my-2 mx-1 justify-content-center">
+                                <table class="table table-striped table-borderless">
+                                    <thead style="background-color: hsl(0, 31%, 55%);" class="text-white">
+                                        <tr>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Unit Price</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for( let i=0; i < orderData.order.length; i++ ) { %>
+                                            <% console.log(orderData.order[i].product.name ) %>
+
+                                                <tr>
+                                                    <td>
+                                                        <%=orderData.order[i].product.product_name %>
+                                                    </td>
+                                                    <td>₹<%=orderData.order[i].price %>
+                                                    </td>
+                                                    <td>
+                                                        <%=orderData.order[i].quantity%>
+                                                    </td>
+                                                    <td>₹ <%=orderData.order[i].amount %>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <div class="mt-5 row" style="display: flex;justify-content: end;">
+
+                                <div class="col-lg-4 ml-4">
+                                    <h6>
+                                        <ul class="list-unstyled ">
+                                            <li class="text-muted ms-3"><span class="text-black me-4">Grand Total:
+                                                </span>₹
+                                                <%=orderData.grand_total%>
+                                            </li><br>
+                                            <li class="text-muted ms-3"><span class="text-black me-4"> Discount:
+                                                </span><span>₹ <%= orderData.discount%>
+                                                </span>
+                                            </li><br>
+                                            <li class="text-muted ms-3"><span class="text-black me-4"> Net Total:
+                                                </span><span>₹ <%=orderData.net_total %></span></li>
+                                        </ul>
+                                    </h6>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-12 justify-content-center d-flex">
+                                    <p><span style="color: #ff3368; font-weight: bold">Thank you for purchasing from
+                                            us.</span></p>
+                                    <a href="/orderDetails">For Order details click here</a>
+                                </div>
+
+                            </div>
+                            <hr>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+        <script>
+            document.getElementById("printInvoice").addEventListener("click", function () {
+                window.print();
+            });
+
+        </script>
+
+
+
+
+    </body>
+
+    <%- include('../layouts/footer.ejs') -%>

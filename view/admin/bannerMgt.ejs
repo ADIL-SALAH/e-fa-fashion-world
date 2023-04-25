@@ -1,0 +1,100 @@
+<%- include('../adminlayout/adminHeader') %>
+
+    <nav class="navbar navbar-expand-xl">
+        <div class="container h-100">
+            <a class="navbar-brand" href="index.html">
+                <h1 class="tm-site-title mb-0">Product Admin</h1>
+            </a>
+            <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fas fa-bars tm-nav-icon"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto h-100">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/adminHome">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="/admin/category" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="far fa-file-alt"></i>
+                            <span>
+                                Category
+                            </span>
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/productList" role="button">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>
+                                Product
+                            </span>
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link " href="/admin/bannerMgt" role="button">
+                            <i class="fa-solid fa-images"></i>
+                            <span>
+                                Banner
+                            </span>
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/userMgt" role="button">
+                            <i class="far fa-user"></i>
+                            User
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/orderMgt" role="button">
+                            <i class="fa-solid fa-truck"></i>Orders
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/coupon" role="button">
+                            <i class="fa-solid fa-tag"></i>Coupon
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/salesReport" role="button">
+                            <i class="fa-thin fa-file-chart-column"></i>Sales Report
+                        </a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+
+                        <a class="nav-link d-block" href="/admin/logout">
+                            Admin, <b>Logout</b>
+                        </a>
+
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+    </nav>
+
+
+
+    <h1 class="d-flex justify-content-center">Banner Management</h1>
+
+    <%- include('../adminlayout/adminFooter') %>
