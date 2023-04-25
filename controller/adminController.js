@@ -10,7 +10,7 @@ const session = require('express-session')
 const orderSchema = require("../model/orderModel")
 
 
-
+const dummy = 0
 const securePassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 10);
