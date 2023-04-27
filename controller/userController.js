@@ -14,8 +14,8 @@ const couponSchema = require('../model/coupenModel')
 require('dotenv').config({ path: './config.env' });
 const Razorpay = require('razorpay')
 const instance = new Razorpay({
-  key_id: 'rzp_test_EWUJbMjY8cGv66',
-  key_secret: 'BXTec66V9JcNP6EuXOdrIuvI'
+  key_id: process.env.razorpay_key_Id,
+  key_secret: process.env.razorpay_secret_key
 });
 
 
@@ -43,7 +43,7 @@ const loadRegister = async (req, res, next) => {
   }
 };
 
-const sendverifymail = async (name, email, user_id, token) => {
+const sendverifymail = async (name, email, token) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -62,7 +62,7 @@ const sendverifymail = async (name, email, user_id, token) => {
       html:
         "<p>Hi " +
         name +
-        ', please click here to <a href="http://localhost:3000/verifyEmail?id=' +
+        ', please click here to <a href="https://e-fafashionworld.shop/verifyEmail?id=' +
         token +
         '">verify</a> your mail.</p>',
     };
@@ -132,8 +132,7 @@ const insertUser = async (req, res, next) => {
       console.log(userData);
 
       if (userData) {
-        sendverifymail(req.body.name, req.body.username, userData._id, token);
-        console.log(req.body.username);
+        sendverifymail(req.body.name, req.body.username, token);
         message = "Account created sucessfully";
         res.render("login", { message });
         message = null
@@ -151,8 +150,9 @@ const insertUser = async (req, res, next) => {
 
 const loadLogin = async (req, res, next) => {
   try {
-    res.render("login", { message });
+    res.render("login", { message, success });
     message = null;
+    success = null
   } catch (error) {
     console.log(error.message);
     next(error)
@@ -204,9 +204,6 @@ const verifyLogin = async (req, res, next) => {
     } else if (userPassword == " ") {
       message = "Enter the password";
       res.redirect("/login");
-    } else if (userDetails.isBlocked == 1) {
-      message = "Sorry, You can't login!! Due to this Account is Blocked"
-      res.redirect('/login')
     }
     else {
       res.render("login", { message: "Invalid UserName" });
@@ -294,7 +291,11 @@ const loadShop = async (req, res, next) => {
 const searchFilter = async (req, res, next) => {
   try {
     console.log('search');
-
+    let walletAmount = 0
+    if (req.session.user_id) {
+      const userDetails = await userSchema.findOne({ _id: req.session.user_id })
+      walletAmount = userDetails.wallet
+    }
     let search = ""
     if (req.body.search) {
       search = req.body.search
@@ -356,8 +357,7 @@ const searchFilter = async (req, res, next) => {
 
     const categoryDetails = await categorySchema.find({})
 
-    const userDetails = await userSchema.findOne({ _id: req.session.user_id })
-    let walletAmount = userDetails.wallet
+
     res.render('shop', {
       productDetails, totalPage, currentPage, categoryDetails, islogin: req.session.user_id, search, totalProducts, message, success, walletAmount
     })
@@ -398,7 +398,11 @@ const categoryShop = async (req, res, next) => {
     let currentPage = req.query.pageno || 1
     const limit = 6
     const offset = (currentPage - 1) * limit
-
+    let walletAmount = 0
+    if (req.session.user_id) {
+      const userDetails = await userSchema.findOne({ _id: req.session.user_id })
+      walletAmount = userDetails.wallet
+    }
     const categoryid = req.query.categoryid
     console.log(categoryid + '...............');
     const productDetails = await fancyproductSchema.find({ is_deleted: 0, category: categoryid }).skip(offset).limit(limit)
@@ -408,7 +412,7 @@ const categoryShop = async (req, res, next) => {
     console.log(totalPage);
     const categoryDetails = await categorySchema.find({ is_deleted: "not" })
     res.render('shop', {
-      productDetails, search, categoryDetails, islogin: req.session.user_id, currentPage, totalPage, success, message
+      productDetails, search, categoryDetails, islogin: req.session.user_id, currentPage, totalPage, success, message, walletAmount
     })
     message = null
     success = null
@@ -1430,6 +1434,7 @@ const verifyEmail = async (req, res, next) => {
       { token: req.query.id },
       { $set: { isVerified: 1, token: "" } }
     );
+
     res.render("email verified");
     console.log(updateIsVerified);
   } catch (error) {
@@ -1570,6 +1575,88 @@ const otpVerify = async (req, res, next) => {
 };
 
 
+const loadforgotPassword = async (req, res, next) => {
+  try {
+    res.render('forgotPassword', { message, success })
+    message = null
+    success = null
+  } catch (error) {
+    console.log(error);
+    next()
+  }
+}
+
+
+const forgotPassword = async (req, res) => {
+  try {
+    const username = req.body.username
+    const usernameMatched = await userSchema.findOne({ username: username })
+    if (usernameMatched) {
+      const token = randomString.generate()
+      await userSchema.updateOne({ username: username }, { $set: { token: token, isVerified: 0 } })
+      sendverifymail(usernameMatched.name, req.body.username, token);
+      success = 'Verify Mail has sent to your mail. Please Verify Your Mail'
+      res.render('updatePassword', { usernameMatched, message, success })
+      message = null
+      success = null
+    } else {
+      message = "Not a valid Username"
+      res.redirect(`/updatePassword?username=${username}`)
+    }
+  } catch (error) {
+    console.log(error);
+
+  }
+}
+
+
+
+
+const loadUpdatePassword = async (req, res, next) => {
+  try {
+    const username = req.query.username
+    console.log(username, '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    const usernameMatched = await userSchema.findOne({ username: username })
+    if (usernameMatched) {
+      success = 'Username Matched'
+      res.render('updatePassword', { usernameMatched, success, message })
+      message = null
+      success = null
+    }
+    else {
+      message = 'Not a Valid Username'
+      res.redirect('/forgotPassword')
+    }
+  } catch (error) {
+    console.log();
+    next()
+  }
+}
+
+const updatePassword = async (req, res) => {
+  try {
+    const { username, password, confirmPassword } = req.body
+    const securedPassword = await securePassword(password)
+    const userDetails = await userSchema.findOne({ username: username })
+    console.log(username, '________________')
+    if (userDetails.isVerified == 1) {
+      await userSchema.updateOne({ username: username }, { $set: { password: securedPassword } })
+      success = 'Password Updated Successfully'
+      res.redirect('/login')
+    } else {
+      message = 'Email is not Verified'
+      res.redirect(`/updatePassword?username=${username}`)
+    }
+
+
+
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
 module.exports = {
   loadRegister,
   insertUser,
@@ -1609,8 +1696,11 @@ module.exports = {
   addToWishlist,
   removeWishlist,
   returnOrder,
-  // orderCreation,
   razorpay_payment,
-  applyCoupon
+  applyCoupon,
+  loadforgotPassword,
+  forgotPassword,
+  updatePassword,
+  loadUpdatePassword
 
 };

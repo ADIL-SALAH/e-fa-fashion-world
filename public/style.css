@@ -6,6 +6,19 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 
+.btn:hover {
+  text-shadow: 3px 3px rgb(143, 143, 143);
+  transition: transform 0.2s ease-in-out;
+  transform: scale(1.1);
+}
+
+a:hover {
+  text-shadow: 3px 3px rgba(122, 118, 118, 0.4);
+  transition: transform 0.2s ease-in-out;
+  transform: scale(1.1);
+}
+
+
 
 .fa-trash {
   transition: transform 0.3s ease-in-out;
