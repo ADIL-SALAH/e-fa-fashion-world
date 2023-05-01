@@ -435,13 +435,13 @@
 
         let orderData = '<%=order%>'
 
-        // $(document).ready(() => {
-        if (orderData) {
-            razorpayPopUp()
-        }
+        $(document).ready(() => {
+            if (orderData) {
+                razorpayPopUp()
+            }
 
 
-        // })
+        })
         console.log(orderData);
         var options = {
             "key": 'rzp_test_EWUJbMjY8cGv66',
@@ -456,15 +456,15 @@
                 console.log('onsuccess');
                 success()
 
-            },
-            "onfailure": function (error) {
-                console.log('onfailure');
-                failure();
             }
 
         };
 
         var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            failure();
+        });
+
         function razorpayPopUp() {
             rzp1.open();
             e.preventDefault();
@@ -476,62 +476,10 @@
         }
         function failure() {
             console.log('::::::::::::::::::::::::::::::');
-            location.href = '/paymentPending'
+            location.href = '/paymentFailure'
         }
 
 
-
-
-
-
-
-
-
-        // function razorpay() {
-        //     $.ajax({
-        //         // url: `/orderCreation?addressId=${selectedAddressId}`,
-        //         // type: 'get',
-        //         dataType: 'json',
-        //         contentType: 'appilaction/json',
-
-        //         success: (res) => {
-        //             console.log(res, "{{{{{{{{{{}}}}}}}}}}");
-
-        //             if (res.order) {
-
-        //                 var options = {
-        //                     "key": 'rzp_test_EWUJbMjY8cGv66',
-        //                     "amount": "<%= 100 *100 %>",
-        //                     "currency": "INR",
-        //                     "name": "Acme Corp",
-        //                     "description": "Test Transaction",
-        //                     "image": "https://example.com/your_logo",
-        //                     "order_id": res.order.id,
-        //                     "handler": function (response) {
-        //                         success()
-        //                     },
-        //                     "prefill": {
-        //                         "name": "Gaurav Kumar",
-        //                         "email": "gaurav.kumar@example.com",
-        //                         "contact": "9000090000"
-        //                     },
-        //                     "notes": {
-        //                         "address": "Razorpay Corporate Office"
-        //                     },
-        //                     "theme": {
-        //                         "color": "#dc3545"
-        //                     }
-        //                 }; console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        //                 var rzp1 = new Razorpay(options);
-        //                 document.getElementById('rzp-button1').onclick = function (e) {
-        //                     rzp1.open();
-        //                     e.preventDefault();
-        //                 }
-        //             }
-
-        //         }
-        //     })
-        // }
 
 
 

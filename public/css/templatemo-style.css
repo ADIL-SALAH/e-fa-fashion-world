@@ -151,7 +151,6 @@ button:focus {
 .navbar-nav .nav-link.active {
   background-color: #a8827d;
   color: #fff;
-  border-radius: 100%;
 
 }
 

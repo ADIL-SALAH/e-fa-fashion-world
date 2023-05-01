@@ -123,29 +123,32 @@
                                                     <td class="">
                                                         <div class="price-wrap my-3 column text-center">
                                                             <%if(orderData.status=="Order Confirmed" ){%>
-                                                                <span class=" orderdetails status price text-info">
+                                                                <span
+                                                                    class=" orderdetails status price text-info order<%= orderData._id %>status">
                                                                     <%=orderData.status%>
                                                                 </span><br />
                                                                 <%}else if(orderData.status=="Order Cancelled" ){%>
                                                                     <span
-                                                                        class=" orderdetails status price text-danger">
+                                                                        class=" orderdetails status price text-danger  order<%= orderData._id %>status">
                                                                         <%=orderData.status%>
                                                                     </span><br />
                                                                     <%}else if(orderData.status=="Order Returned" ){%>
-                                                                        <span class=" status orderdetails price
-                                                                            text-warning">
+                                                                        <span
+                                                                            class=" status orderdetails price
+                                                                            text-warning order<%= orderData._id %>status">
                                                                             <%=orderData.status%>
                                                                         </span><br />
                                                                         <%}else if(orderData.status=="Order Delivered"
                                                                             ){%>
-                                                                            <span class="status orderdetails price
-                                                                                text-success">
+                                                                            <span
+                                                                                class="status orderdetails price
+                                                                                text-success order<%= orderData._id %>status">
                                                                                 <%=orderData.status%>
                                                                             </span><br />
                                                                             <%}else if(orderData.status=="Order Shipped"
                                                                                 ) {%>
                                                                                 <span
-                                                                                    class=" orderdetails status price text-primary">
+                                                                                    class=" orderdetails status price text-primary order<%= orderData._id %>status">
                                                                                     <%=orderData.status%>
                                                                                 </span><br />
                                                                                 <%}%>
@@ -253,7 +256,7 @@
                     type: "post",
                     url: `/admin/shipOrder?id=${id}`,
                     success: function (data) {
-                        const statusElement = document.querySelectorAll(`#order-${id}-status`);
+                        const statusElement = document.querySelectorAll(`.order${id}status`);
                         console.log(statusElement, "??????????????");
 
                         for (let i = 0; i < statusElement.length; i++) { statusElement[i].innerHTML = data.status }
@@ -284,7 +287,7 @@
                     type: "post",
                     url: `/admin/orderDeliver?id=${id}`,
                     success: function (data) {
-                        const statusElement = document.querySelectorAll(`#order-${id}-status`);
+                        const statusElement = document.querySelectorAll(`.order${id}status`);
                         for (let i = 0; i < statusElement.length; i++) {
                             statusElement[i].innerHTML = data.status
                         }

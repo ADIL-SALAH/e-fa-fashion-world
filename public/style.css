@@ -13,7 +13,6 @@
 }
 
 a:hover {
-  text-shadow: 3px 3px rgba(122, 118, 118, 0.4);
   transition: transform 0.2s ease-in-out;
   transform: scale(1.1);
 }

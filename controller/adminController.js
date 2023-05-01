@@ -1,6 +1,7 @@
 const adminSchema = require("../model/userModel");
 const categorySchema = require("../model/categoryModel");
 const fancyProductSchema = require("../model/productModel");
+const bannerSchema = require("../model/bannerModel");
 const userSchema = require('../model/userModel')
 const couponSchema = require('../model/coupenModel')
 const bcrypt = require("bcrypt");
@@ -25,7 +26,7 @@ let success = null
 const loadLogin = async (req, res) => {
   try {
     console.log("loadlogin rendered");
-    res.render("adminLogin");
+    res.render("adminLogin", { message, success });
   } catch (error) {
     console.log(error.message);
   }
@@ -88,20 +89,20 @@ const loadDashboard = async (req, res) => {
     const dailySalesReport = await orderSchema.aggregate([
       {
         $match: {
-          "status": "Order Delivered",
-          "order.estimated_delivery": { $gte: today, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
+          status: "Order Delivered",
+          'order.estimated_delivery': { $gte: today, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
         },
       },
       { $unwind: "$order" },
-      {
-        $match: {
-          "status": "Order Delivered",
-          "order.estimated_delivery": { $gte: today, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
-        },
-      },
+      // {
+      //   $match: {
+      //     status: "Order Delivered",
+      //     date: { $gte: today, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
+      //   },
+      // },
       {
         $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$order.estimated_delivery" } },
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
           totalSales: { $sum: "$net_total" },
           totalItemsSold: { $sum: "$order.quantity" },
         },
@@ -109,50 +110,51 @@ const loadDashboard = async (req, res) => {
       { $sort: { _id: 1 } },
     ]);
 
-
+    console.log(dailySalesReport, 'PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
 
     const weeklySalesReport = await orderSchema.aggregate([
       {
         $match: {
-          "status": "Order Delivered",
-          "order.estimated_delivery": { $gte: weekAgo, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
+          status: "Order Delivered",
+          'order.estimated_delivery': { $gte: weekAgo, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
         },
       },
       { $unwind: "$order" },
-      {
-        $match: {
-          "status": "Order Delivered",
-          "order.estimated_delivery": { $gte: weekAgo, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
-        },
-      },
+      // {
+      //   $match: {
+      //     status: "Order Delivered",
+      //     date: { $gte: weekAgo, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
+      //   },
+      // },
       {
         $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$order.estimated_delivery" } },
-          totalSales: { $sum: "$grandTotal" },
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+          totalSales: { $sum: "$net_total" },
           totalItemsSold: { $sum: "$order.quantity" },
         },
       },
       { $sort: { _id: 1 } },
     ]);
+    console.log(weeklySalesReport, 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
 
 
     const yearlySalesReport = await orderSchema.aggregate([
       {
         $match: {
-          "status": "Order Delivered",
-          "order.estimated_delivery": { $gte: yearAgo, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
+          status: "Order Delivered",
+          date: { $gte: yearAgo },
         },
       },
       { $unwind: "$order" },
-      {
-        $match: {
-          "status": "Order Delivered",
-          "order.estimated_delivery": { $gte: yearAgo, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) },
-        },
-      },
+      // {
+      //   $match: {
+      //     status: "Order Delivered",
+      //     date: { $gte: yearAgo },
+      //   },
+      // },
       {
         $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$order.estimated_delivery" } },
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
           totalSales: { $sum: "$net_total" },
           totalItemsSold: { $sum: "$order.quantity" },
         },
@@ -165,22 +167,22 @@ const loadDashboard = async (req, res) => {
     const currentMonth = currentDate.getMonth()
     const currentYear = currentDate.getFullYear()
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
-
     const monthlyStart = new Date(currentYear, currentMonth, 1).toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
     const monthlyEnd = new Date(currentYear, currentMonth, daysInMonth);
+    console.log(monthlyStart, monthlyEnd, ')()()()()()()()()()()()()()()');
 
     const monthlySalesData = await orderSchema.find({
-      'order.estimated_delivery': {
+      date: {
         $gte: monthlyStart,
         $lte: monthlyEnd,
-      },
+      }, status: 'Order Delivered'
     }).populate('order.product')
-
+    console.log(monthlySalesData, '{{}}}{}}{}{][{}{}{}{{}{{}}{}{{}}{');
     const dailySalesDetails = []
     for (let i = 2; i <= daysInMonth + 1; i++) {
       const date = new Date(currentYear, currentMonth, i)
       const salesOfDay = monthlySalesData.filter((order) => {
-        return new Date(order.order[0].estimated_delivery).toDateString() === date.toDateString()
+        return new Date(order.date).toDateString() === date.toDateString()
       })
       const totalSalesOfDay = salesOfDay.reduce((total, order) => {
         return total + order.net_total;
@@ -192,8 +194,7 @@ const loadDashboard = async (req, res) => {
 
       dailySalesDetails.push({ date: date, totalSales: totalSalesOfDay, totalItemsSold: productCountOfDay });
     }
-
-
+    console.log(dailySalesDetails, '+_+_+_+_+_+_+_+_+_+_+_+_+_+_');
     const order = await orderSchema.aggregate([
       {
         $group: {
@@ -275,11 +276,53 @@ const loadCategory = async (req, res) => {
 const loadBanner = async (req, res) => {
   try {
     console.log("loadBanner worked..");
-    res.render("bannerMgt");
+    const bannerDetails = await bannerSchema.find({})
+    res.render("bannerMgt", { bannerDetails, success, message });
+    success = null
+    message = null
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
+const addBanner = async (req, res) => {
+  try {
+    const { title, description } = req.body
+    const image = req.file.filename
+    const addbanner = new bannerSchema({
+      title: title,
+      image: image,
+      description: description
+    })
+    const bannersave = await addbanner.save()
+    success = "Banner Added Successfully"
+    res.redirect('/admin/bannerMgt')
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+const deleteBanner = async (req, res) => {
+  const bannerId = req.query.id
+  console.log(bannerId, '::::::::::::::::::::::::::');
+  bannerSchema.deleteOne({
+    _id: bannerId
+  })
+    .then(() => {
+      console.log('Banner deleted successfully');
+      success = 'Banner deleted successfully'
+      res.redirect('/admin/bannerMgt')
+    })
+    .catch((error) => {
+      console.log(error);
+      message = 'Failed to Delete'
+      res.redirect('/admin/bannerMgt')
+    });
+
+}
+
 
 const loadUserMgt = async (req, res) => {
   try {
@@ -369,7 +412,12 @@ const shipOrder = async (req, res) => {
 const orderDeliver = async (req, res) => {
   try {
     const orderId = req.query.id
-    const orderStatusUpdate = await orderSchema.findByIdAndUpdate({ _id: orderId }, { $set: { status: "Order Delivered" } })
+    const todayDate = new Date()
+    const orderStatusUpdate = await orderSchema.findByIdAndUpdate({ _id: orderId }, {
+      $set: {
+        status: "Order Delivered", 'order.estimated_delivery': todayDate
+      }
+    })
     const updatedOrder = await orderSchema.findOne({ _id: orderId })
     res.json({ status: updatedOrder.status })
   } catch (error) {
@@ -885,6 +933,7 @@ const couponStatus = async (req, res) => {
 const loadSalesReport = async (req, res) => {
   try {
     let currentPage = 1
+    let filter = null
     if (req.query.pageno) {
       currentPage = req.query.pageno
     }
@@ -902,7 +951,7 @@ const loadSalesReport = async (req, res) => {
     const totalOrders = orders.length
     let totalPage = Math.ceil(totalOrders / limit)
     console.log(orderDetails, 'kkkkkkkkkkkkkkkkk', 'JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ');
-    res.render("salesReport", { orderDetails, currentPage, limit, totalPage })
+    res.render("salesReport", { orderDetails, currentPage, limit, totalPage, filter })
   } catch (error) {
     console.log(error);
   }
@@ -919,16 +968,21 @@ const filterSalesReport = async (req, res) => {
     const limit = 10
     const offset = (currentPage - 1) * limit
     const orders = await orderSchema.find({})
-    const { firstDate, lastDate } = req.body;
+    let { firstDate, lastDate } = req.body;
+    console.log(firstDate, lastDate, '|||||||||||||||||||');
     const orderDetails = await orderSchema.find({
-      'status': "Order Delivered",
-      'order.date': { $gte: firstDate, $lte: lastDate }
+      status: "Order Delivered",
+      date: { $gte: firstDate, $lte: lastDate }
     }).populate('order.product').skip(offset)
       .limit(limit)
       .sort({ date: -1 })
-    const totalOrders = orders.length
+    const totalOrders = orderDetails.length
     let totalPage = Math.ceil(totalOrders / limit)
-    res.render('salesReport', { orderDetails, currentPage, limit, totalPage });
+    console.log(orderDetails, 'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+    let filter = {
+      firstDate, lastDate
+    }
+    res.render('salesReport', { orderDetails, currentPage, limit, totalPage, filter });
 
   } catch (error) {
     console.log(error);
@@ -950,6 +1004,8 @@ module.exports = {
   loadProductList,
   loadCategory,
   loadBanner,
+  addBanner,
+  deleteBanner,
   loadUserMgt,
   loadAddCategory,
   addCategory,

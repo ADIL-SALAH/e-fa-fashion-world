@@ -56,7 +56,9 @@
                 <div class="col-lg-3 col-6 text-right">
                     <a href="" class="btn border">
                         <i class="fas fa-heart text-primary"></i>
-                        <span class="badge">0</span>
+                        <span class="badge">
+                            <%= wishlistQuant%>
+                        </span>
                     </a>
                     <button href="" class="btn border">
                         <i class="fa-solid fa-wallet text-primary"></i> <span class="badge">
@@ -369,6 +371,8 @@
 
 
         <script>
+
+
             // Decrement function
             const minus = function (id) {
                 console.log('hftvftfv');
@@ -415,7 +419,7 @@
             const plus = function (id, stock) {
                 const quantity = $(`#${id}quantity`).val()
                 console.log(quantity, stock, 'OOOOOOOOOOOOOOOOOOOOOOOOOO');
-                if (Number(quantity) <= Number(stock) - 1) {
+                if (Number(quantity) <= Number(stock)) {
                     console.log(quantity, stock, "TTTTTTTTTTTTTTTTTTTTTTTT");
                     $.ajax({
                         type: "post",
@@ -428,7 +432,10 @@
                             if (data.productid == id) {
                                 $(`#${id}p`).text(data.total1)
                                 $(`#total`).text(data.grandTotal1)
-                                $(`#${id}quantity`).val(data.quantity)
+                                if (Number(quantity) <= Number(stock) - 1) {
+
+                                    $(`#${id}quantity`).val(data.quantity)
+                                }
                                 $(`#netTotal`).text(data.grandTotal1)
                                 if (data.quantity > 1) {
                                     function btnActive() {

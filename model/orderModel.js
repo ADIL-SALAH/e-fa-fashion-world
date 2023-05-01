@@ -15,16 +15,20 @@ const orderSchema = new mongoose.Schema({
             ref: "fancy products"
         },
         quantity: {
-            type: Number
+            type: Number,
+            require: true
         },
         price: {
-            type: Number
+            type: Number,
+            require: true
         },
         amount: {
-            type: Number
+            type: Number,
+            require: true
         },
         estimated_delivery: {
             type: Date,
+            require: true
         }
     }],
     status: {
@@ -32,12 +36,14 @@ const orderSchema = new mongoose.Schema({
         default: "Order Confirmed"
     },
     date: {
-        type: Date
+        type: Date,
+        require: true
     },
     delivery_address: {
         type: Object,
         require: true
     },
+
     grand_total: {
         type: Number,
         require: true
@@ -47,10 +53,12 @@ const orderSchema = new mongoose.Schema({
         require: true
     },
     net_total: {
-        type: Number
+        type: Number,
+        require: true
     },
     payment_method: {
-        type: String
+        type: String,
+        require: true
     }
 })
 

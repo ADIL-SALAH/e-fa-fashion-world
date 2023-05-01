@@ -64,7 +64,7 @@ user_route.post('/applyCoupon', blockedOrNot.is_blocked, userController.applyCou
 user_route.post('/placeOrder', blockedOrNot.is_blocked, userController.placeOrder)
 
 user_route.get('/razorpay', blockedOrNot.is_blocked, userController.razorpay_payment, errorPage)
-user_route.get('/paymentPending', blockedOrNot.is_blocked, userController.paymentPending, errorPage)
+user_route.get('/paymentFailure', blockedOrNot.is_blocked, userController.paymentFailure, errorPage)
 user_route.get('/orderSuccess', blockedOrNot.is_blocked, userController.orderSuccess, errorPage)
 
 user_route.get('/orderList', blockedOrNot.is_blocked, userController.orderList, errorPage)

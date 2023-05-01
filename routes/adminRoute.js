@@ -21,12 +21,14 @@ const adminAuth = require('../middleware/admin_auth')
 
 const adminController = require('../controller/adminController')
 
-adminRoute.get('/', adminAuth.isLogout, adminController.loadLogin)
+adminRoute.get('/', adminController.loadLogin)
 adminRoute.post('/', adminController.verifyLogin)
 
-adminRoute.get('/adminHome', adminAuth.isLogin, adminController.loadDashboard)
+adminRoute.get('/adminHome', adminController.loadDashboard)
 
 adminRoute.get('/bannerMgt', adminController.loadBanner)
+adminRoute.post('/addBanner', upload.single('image'), adminController.addBanner)
+adminRoute.get('/deleteBanner', adminController.deleteBanner)
 
 adminRoute.get('/category', adminController.loadCategory)
 adminRoute.get('/addCategory', adminController.loadAddCategory)

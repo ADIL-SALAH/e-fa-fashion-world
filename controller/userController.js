@@ -222,20 +222,22 @@ const loadHome = async (req, res, next) => {
     const productDetails = await fancyproductSchema.find({ is_deleted: 0 })
     let cartItemCount = 0
     let walletAmount = 0
+    let wishlistQuant = 0
     if (req.session.user_id) {
       const userDetails = await userSchema.findOne({ _id: req.session.user_id })
       console.log(userDetails, ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
       cartItemCount = userDetails.cart.length
       walletAmount = userDetails.wallet
+      wishlistQuant = userDetails.whishlist.length
       console.log(walletAmount);
       console.log(" no.of items in cart: ", cartItemCount);
       res.render("home", {
-        categoryDetails, islogin: req.session.user_id, productDetails, search, cartItemCount, info, success, message, walletAmount
+        categoryDetails, islogin: req.session.user_id, productDetails, search, cartItemCount, info, success, message, walletAmount, wishlistQuant
       });
       info = null, success = null, message = null
     } else {
       res.render("home", {
-        categoryDetails, islogin: req.session.user_id, productDetails, search, cartItemCount, info, success, message, walletAmount
+        categoryDetails, islogin: req.session.user_id, productDetails, search, cartItemCount, info, success, message, walletAmount, wishlistQuant
       });
       info = null, success = null, message = null
     }
@@ -274,12 +276,16 @@ const loadShop = async (req, res, next) => {
     const totalPage = Math.ceil(totalProducts / limit)
     console.log(totalPage);
     let walletAmount = 0
+    let cartQuant = 0
+    let wishlistQuant = 0
     if (req.session.user_id) {
       const userDetails = await userSchema.findOne({ _id: req.session.user_id })
       walletAmount = userDetails.wallet
+      cartQuant = userDetails.cart.length
+      wishlistQuant = userDetails.whishlist.length
     }
     console.log(walletAmount);
-    res.render('shop', { message, categoryDetails, islogin: req.session.user_id, productDetails, totalPage, currentPage, search, totalProducts, success, walletAmount })
+    res.render('shop', { message, categoryDetails, islogin: req.session.user_id, productDetails, totalPage, currentPage, search, totalProducts, success, walletAmount, cartQuant, wishlistQuant })
     success = null,
       message = null
   } catch (error) {
@@ -292,9 +298,13 @@ const searchFilter = async (req, res, next) => {
   try {
     console.log('search');
     let walletAmount = 0
+    let cartQuant = 0
+    let wishlistQuant = 0
     if (req.session.user_id) {
       const userDetails = await userSchema.findOne({ _id: req.session.user_id })
       walletAmount = userDetails.wallet
+      cartQuant = userDetails.cart.length
+      wishlistQuant = userDetails.whishlist.length
     }
     let search = ""
     if (req.body.search) {
@@ -359,7 +369,7 @@ const searchFilter = async (req, res, next) => {
 
 
     res.render('shop', {
-      productDetails, totalPage, currentPage, categoryDetails, islogin: req.session.user_id, search, totalProducts, message, success, walletAmount
+      productDetails, totalPage, currentPage, categoryDetails, islogin: req.session.user_id, search, totalProducts, message, success, walletAmount, wishlistQuant, cartQuant
     })
 
   } catch (error) {
@@ -375,14 +385,7 @@ const proDetails = async (req, res, next) => {
     const categoryDetails = await categorySchema.find({})
     const productDetails = await fancyproductSchema.findOne({ _id: proId })
     const userCollection = await userSchema.findOne({ _id: req.session.user_id })
-    // let isDuplicate
-    // if (userCollection.whishlist.length != 0) {
-    //   isDuplicate = userCollection.whishlist.filter((value) => {
-    //     return value.product == proId
-    //   })
-    // } else {
-    //   isDuplicate = null
-    // }
+
     console.log(productDetails.images.length);
     res.render('prodetails', { productDetails, categoryDetails, search, islogin: req.session.user_id })
     console.log('Product details rendered');
@@ -399,9 +402,13 @@ const categoryShop = async (req, res, next) => {
     const limit = 6
     const offset = (currentPage - 1) * limit
     let walletAmount = 0
+    let cartQuant = 0
+    let wishlistQuant = 0
     if (req.session.user_id) {
       const userDetails = await userSchema.findOne({ _id: req.session.user_id })
       walletAmount = userDetails.wallet
+      cartQuant = userDetails.cart.length
+      wishlistQuant = userDetails.whishlist.length
     }
     const categoryid = req.query.categoryid
     console.log(categoryid + '...............');
@@ -412,7 +419,7 @@ const categoryShop = async (req, res, next) => {
     console.log(totalPage);
     const categoryDetails = await categorySchema.find({ is_deleted: "not" })
     res.render('shop', {
-      productDetails, search, categoryDetails, islogin: req.session.user_id, currentPage, totalPage, success, message, walletAmount
+      productDetails, search, categoryDetails, islogin: req.session.user_id, currentPage, totalPage, success, message, walletAmount, wishlistQuant, cartQuant
     })
     message = null
     success = null
@@ -436,7 +443,8 @@ const loadCart = async (req, res, next) => {
 
       if (cartProducts.cart.length != 0) {
         let walletAmount = cartProducts.wallet
-        res.render('cart', { cartProducts, message, success, walletAmount })
+        let wishlistQuant = cartProducts.whishlist.length
+        res.render('cart', { cartProducts, message, success, walletAmount, wishlistQuant })
         message = null
         success = null
       } else {
@@ -778,6 +786,7 @@ const loadShipToOtherAddress = async (req, res) => {
 
 const loadWishlist = async (req, res, next) => {
   try {
+
     if (req.session.user_id) {
 
       const userCollection = await userSchema.findOne({ _id: req.session.user_id }).populate('whishlist.product')
@@ -786,8 +795,9 @@ const loadWishlist = async (req, res, next) => {
         res.redirect('/')
       }
       const cartItemCount = userCollection.cart.length
+      const walletAmount = userCollection.wallet
       console.log(userCollection);
-      res.render('wishlist', { userCollection, cartItemCount, success })
+      res.render('wishlist', { userCollection, cartItemCount, success, walletAmount })
       success = null
     } else {
       info = "User not Login"
@@ -848,8 +858,10 @@ const loadUserProfile = async (req, res, next) => {
       res.redirect('/home')
     } const userDetails = await userSchema.findOne({ _id: req.session.user_id })
     const walletAmount = userDetails.wallet
+    const cartQuant = userDetails.cart.length
+    const wishlistQuant = userDetails.whishlist.length
     res.render('userprofile', {
-      userDetails, success, walletAmount
+      userDetails, success, walletAmount, wishlistQuant, cartQuant
     })
     success = null
   } catch (error) {
@@ -1285,7 +1297,7 @@ const razorpay_payment = async (req, res, next) => {
 
 
 
-const paymentPending = async (req, res, next) => {
+const paymentFailure = async (req, res, next) => {
   try {
     cartDetails = userSchema.findOne({ _id: req.session.user_id }, { cart: 1, _id: 0 })
     console.log(cartDetails, '????????????????????????????????????');
@@ -1688,7 +1700,7 @@ module.exports = {
   deleteAddress,
   placeOrder,
   orderSuccess,
-  paymentPending,
+  paymentFailure,
   orderList,
   orderDetails,
   cancelOrder,

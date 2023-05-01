@@ -48,7 +48,7 @@
 						<span class=" d-flex justify-content-center">Fashion World</span>
 					</a>
 				</div>
-				<div class="col-lg-6 col-6 text-left">
+				<div class="col-lg-6 col-4 text-left">
 					<form action="/search" method="post">
 						<div class="input-group">
 							<% if(search!=null){ %>
@@ -71,10 +71,12 @@
 						</div>
 					</form>
 				</div>
-				<div class="col-lg-3 col-6 text-right">
+				<div class="col-lg-3 col-8 text-right">
 					<a href="/wishlist" class="btn border">
 						<i class="fas fa-heart text-primary"></i>
-						<span class="badge">0</span>
+						<span class="badge">
+							<%= wishlistQuant %>
+						</span>
 					</a>
 					<a href="/cart" class="btn border">
 						<i class="fas fa-shopping-cart text-primary"></i>
@@ -152,7 +154,7 @@
 										<h6 class="nav-link">Logout</h6>
 									</a>
 									<% }else{ %>
-										<a href="" class="nav-item nav-link btn " data-bs-toggle="modal"
+										<a class="nav-item nav-link " data-bs-toggle="modal"
 											data-bs-target="#exampleModal">
 											<h6 class="nav-link">Login</h6>
 										</a>
@@ -479,7 +481,8 @@
 															</div>
 
 															<div class="col-sm-6 mt-5  ">
-																<a href="#" class="float-end text-primary">Forgot
+																<a href="/forgotPassword"
+																	class="float-end text-primary">Forgot
 																	Password?</a>
 															</div>
 

@@ -117,12 +117,23 @@
             </div>
 
             <div class="col-12 col-md-4 mt-3 d-flex justify-content-between align-items-center">
-                <form action="/admin/salesReport" method="post" onsubmit="return validateDates()" class="d-flex">
-                    <input name="first" type="date" style="height: 30px;">
-                    <input name="last" type="date" style="height: 30px;" class="ml-2">
-                    <button type="submit" class="rounded btn-sm ml-2"
-                        style="background-color: rosybrown; border: none;">submit</button>
-                </form>
+                <%if(filter!=null){%>
+                    <form action="/admin/salesReport" method="post" onsubmit="return validateDates()" class="d-flex">
+                        <input name="firstDate" type="date" style="height: 30px;" value="<%= filter.firstDate %>">
+                        <input name="lastDate" type="date" style="height: 30px;" class="ml-2"
+                            value="<%= filter.lastDate %>">
+                        <button type="submit" class="rounded btn-sm ml-2"
+                            style="background-color: rosybrown; border: none;">submit</button>
+                    </form>
+                    <%}else{%>
+                        <form action="/admin/salesReport" method="post" onsubmit="return validateDates()"
+                            class="d-flex">
+                            <input name="firstDate" type="date" style="height: 30px;">
+                            <input name="lastDate" type="date" style="height: 30px;" class="ml-2">
+                            <button type="submit" class="rounded btn-sm ml-2"
+                                style="background-color: rosybrown; border: none;">submit</button>
+                        </form>
+                        <%}%>
             </div>
 
 
@@ -284,8 +295,9 @@
                 }, 1000);
             }
             function validateDates() {
-                var firstDate = new Date(document.getElementsByName('first')[0].value);
-                var lastDate = new Date(document.getElementsByName('last')[0].value);
+                var firstDate = new Date(document.getElementsByName('firstDate')[0].value);
+                var lastDate = new Date(document.getElementsByName('lastDate')[0].value);
+                console.log(firstDate, lastDate, 'iiiiiiiii')
                 if (firstDate > lastDate) {
                     swal({
                         title: "Error",

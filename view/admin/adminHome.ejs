@@ -355,7 +355,9 @@
             <script>
 
                 const daily = '<%= JSON.stringify(dailySalesDetails) %>';
+
                 const data = JSON.parse(daily.replace(/&#34;/g, '"'));
+                console.log(data);
                 // Create an array of days in the current month
                 const currentDate = new Date();
                 const currentDay = currentDate.getDate();
@@ -364,19 +366,22 @@
                 console.log(data, 'LLLLLLLLLLLLLLLL');
                 const totalSalesArray = daysArray.map(day => {
                     const matchingData = data.find(d => new Date(d.date).getDate() === day);
-                    // console.log(matchingData);
+
                     if (day <= currentDay) {
                         return matchingData ? matchingData.totalSales : 0;
                     } else {
                         return null;
                     }
                 });
+                //console.log(totalSalesArray);
                 // console.log(totalSalesArray);
 
 
                 const ctx = document.getElementById('lineChart');
                 ctx.width = 600;
                 ctx.height = 200;
+                console.log(daysArray, totalSalesArray, '/////////////////////////////////////////');
+
                 new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -389,7 +394,6 @@
                             backgroundColor: 'red',
                             tension: 0.4
                         }]
-
                     }, options: {
                         plugins: {
                             title: {

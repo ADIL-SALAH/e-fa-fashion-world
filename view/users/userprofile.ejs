@@ -60,7 +60,9 @@
         <div class="col-lg-3 col-6 text-right">
           <a href="" class="btn border">
             <i class="fas fa-heart text-primary"></i>
-            <span class="badge">0</span>
+            <span class="badge">
+              <%= wishlistQuant%>
+            </span>
           </a>
           <button class="btn border">
             <i class="fa-solid fa-wallet text-primary"></i>
@@ -169,17 +171,12 @@
                 </li>
 
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                  <a href="/user-forgot-password">
+                  <a href="/forgotPassword">
                     <h6 class="mb-0 text-primary">Change Password</h6>
                   </a>
 
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                  <a href="/address">
-                    <h6 class="mb-0 text-primary">Address</h6>
-                  </a>
 
-                </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                   <a href="/logout">
                     <h6 class="mb-0 text-primary">LogOut</h6>
