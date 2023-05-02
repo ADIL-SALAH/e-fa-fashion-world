@@ -910,6 +910,7 @@ const updateProfile = async (req, res, next) => {
 }
 
 
+
 const loadaddAddress = async (req, res, next) => {
   try {
     const userDetails = await userSchema.findOne({ _id: req.session.user_id })
@@ -919,6 +920,8 @@ const loadaddAddress = async (req, res, next) => {
     next(error)
   }
 }
+
+
 
 const addAddress = async (req, res, next) => {
   try {
@@ -1203,28 +1206,6 @@ const placeOrder = async (req, res, next) => {
 
 
 
-// const orderCreation = async (req, res) => {
-//   try {
-//     const userDetails = await userSchema.findOne({ _id: req.session.user_id }).populate("cart.product")
-//     const grandTotal = userDetails.cart.map((value) => {
-//       return value.total_price
-//     }).reduce((acc, curr) => {
-//       return acc = acc + curr
-//     })
-//     const selectedaddressId = req.query.addressId
-//     console.log(req.query.addressId, selectedaddressId, "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-//     req.session.addressId = selectedaddressId
-//     var options = {
-//       amount: grandTotal * 100,  // amount in the smallest currency unit
-//       currency: "INR",
-//       receipt: "order_rcptid_1"
-//     };
-//     const order = await instance.orders.create(options)
-//     res.json({ order })
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 
 

@@ -296,7 +296,6 @@
                 <script>
                     var orders = '<%= JSON.stringify(order) %>';
                     const dataa = JSON.parse(orders.replace(/&#34;/g, '"'));
-                    // console.log(dataa);
                     const ctxx = document.getElementById('piechart');
                     var myChart = new Chart(ctxx, {
                         type: 'pie',
@@ -363,7 +362,7 @@
                 const currentDay = currentDate.getDate();
                 const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
                 const daysArray = Array.from({ length: daysInMonth }, (_, i) => i);
-                console.log(data, 'LLLLLLLLLLLLLLLL');
+                console.log(daysArray, 'LLLLLLLLLLLLLLLL');
                 const totalSalesArray = daysArray.map(day => {
                     const matchingData = data.find(d => new Date(d.date).getDate() === day);
 
@@ -373,7 +372,7 @@
                         return null;
                     }
                 });
-                //console.log(totalSalesArray);
+                // console.log(totalSalesArray);
                 // console.log(totalSalesArray);
 
 

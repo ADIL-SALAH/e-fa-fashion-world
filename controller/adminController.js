@@ -23,10 +23,12 @@ const securePassword = async (password) => {
 
 let message = null
 let success = null
+
 const loadLogin = async (req, res) => {
   try {
     console.log("loadlogin rendered");
     res.render("adminLogin", { message, success });
+    success = null
   } catch (error) {
     console.log(error.message);
   }
@@ -54,16 +56,16 @@ const verifyLogin = async (req, res) => {
           res.redirect('/admin/adminHome');
         } else {
           const message = "You are not an admin";
-          res.render("adminLogin", { message });
+          res.render("adminLogin", { message, success });
           console.log("user not admin");
         }
       } else {
         const message = "invalid password";
-        res.render("adminLogin", { message });
+        res.render("adminLogin", { message, success });
       }
     } else {
       message = "invalid username";
-      res.render("adminLogin", { message });
+      res.render("adminLogin", { message, success });
     }
   } catch (error) {
     console.log(error.message);
@@ -184,6 +186,7 @@ const loadDashboard = async (req, res) => {
       const salesOfDay = monthlySalesData.filter((order) => {
         return new Date(order.date).toDateString() === date.toDateString()
       })
+      console.log(salesOfDay, 'LKLKLKKLKLKLKL');
       const totalSalesOfDay = salesOfDay.reduce((total, order) => {
         return total + order.net_total;
       }, 0);
@@ -412,12 +415,19 @@ const shipOrder = async (req, res) => {
 const orderDeliver = async (req, res) => {
   try {
     const orderId = req.query.id
+    console.log(orderId);
     const todayDate = new Date()
-    const orderStatusUpdate = await orderSchema.findByIdAndUpdate({ _id: orderId }, {
-      $set: {
-        status: "Order Delivered", 'order.estimated_delivery': todayDate
+    console.log(todayDate);
+    const orderStatusUpdate = await orderSchema.findByIdAndUpdate(
+      { _id: orderId },
+      {
+        $set: {
+          status: "Order Delivered",
+          "order.$[].delivered_date": todayDate,
+        }
       }
-    })
+    );
+
     const updatedOrder = await orderSchema.findOne({ _id: orderId })
     res.json({ status: updatedOrder.status })
   } catch (error) {
