@@ -35,8 +35,9 @@ let info
 
 const loadRegister = async (req, res, next) => {
   try {
-    res.render("sign up", { message });
+    res.render("sign up", { message, success });
     message = null;
+    success = null
   } catch (error) {
     console.log(error.message);
     next(error)
@@ -134,12 +135,14 @@ const insertUser = async (req, res, next) => {
       if (userData) {
         sendverifymail(req.body.name, req.body.username, token);
         message = "Account created sucessfully";
-        res.render("login", { message });
+        res.render("login", { message, success });
+        success = null
         message = null
       } else {
         message = "Account Creation Failed";
-        res.render("/signup", { message });
+        res.render("/signup", { message, success });
         message = null
+        success = null
       }
     }
   } catch (error) {
