@@ -57,15 +57,18 @@ const verifyLogin = async (req, res) => {
         } else {
           const message = "You are not an admin";
           res.render("adminLogin", { message, success });
+          message = null
           console.log("user not admin");
         }
       } else {
         const message = "invalid password";
         res.render("adminLogin", { message, success });
+        message = null
       }
     } else {
       message = "invalid username";
       res.render("adminLogin", { message, success });
+      message = null
     }
   } catch (error) {
     console.log(error.message);

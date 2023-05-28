@@ -209,7 +209,9 @@ const verifyLogin = async (req, res, next) => {
       res.redirect("/login");
     }
     else {
-      res.render("login", { message: "Invalid UserName" });
+      res.render("login", { message: "Invalid UserName", success });
+      success = null
+      message = null
     }
   } catch (error) {
     console.log(error.message);
